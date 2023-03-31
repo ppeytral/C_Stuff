@@ -1,0 +1,29 @@
+#include <stdio.h>
+
+int	ft_sqrt(int nb);
+
+int	main(void)
+{
+	printf("%d\n", ft_sqrt(25));
+	printf("%d\n", ft_sqrt(33));
+	printf("%d\n", ft_sqrt(-25));
+	return (0);
+}
+
+int	ft_sqrt(int nb)
+{
+	int	i;
+
+	i = 0;
+	if (nb >= 0)
+	{
+		while (i * i < nb)
+			i++;
+		if (i * i == nb)
+			return (i);
+		else
+			return (0);
+	}
+	else
+		return (0);
+}

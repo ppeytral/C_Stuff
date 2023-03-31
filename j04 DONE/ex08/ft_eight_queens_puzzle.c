@@ -1,0 +1,319 @@
+#include <stdio.h>
+
+int	ft_eight_queens_puzzle(void);
+void	ft_show_board(int board[8][8]);
+void	ft_calculate_positions(int board [8][8], int *positions);
+int	ft_place_queen_on_line(int board[8][8], int line, int from_column);
+void	ft_init_board(int board[8][8]);
+void	ft_go_back(int current_line, int cpt_queens, int from_column, int *positions );
+
+
+int	board[8][8] = {0};
+int	current_line = 0;
+int	current_column = 0;
+int	cpt_queens = 0;
+int	cpt_solutions = 0;
+int	from_column = 0;
+int	positions[8] = {-1, -1, -1, -1, -1, -1, -1, -1};
+int	x, y;
+int	i = 0;
+int	j;
+int	current_branch;
+
+
+int	main(void)
+{
+	ft_eight_queens_puzzle();
+/*	while (i < 20000)
+	{
+		printf("=====  TOUR %d   =====\n", i);
+		printf("current_line=%d, current_column=%d, from_column=%d, cpt_queens=%d\n", current_line, current_column, from_column, cpt_queens);
+		printf("Nombre de solutions trouvées: %d\n",cpt_solutions);
+		printf("positions = [");
+		for (j = 0; j < 7; j++)
+			printf("%d, ", positions[j]);
+		printf("%d]\n", positions[j]);
+
+
+		ft_init_board(board);
+		ft_calculate_positions(board, positions);
+
+		ft_show_board(board);
+
+		if(ft_place_queen_on_line(board, current_line, from_column) >= 0)
+		{
+			positions[current_line] = ft_place_queen_on_line(board, current_line, from_column);
+			cpt_queens++;
+			if (cpt_queens == 8) 
+			{
+				current_line--;
+				cpt_queens--;
+				from_column = positions[current_line] + 1;
+				positions[current_line] = - 1;
+				printf("\nOn remonte d'une ligne à ce tour!\n\n");
+				cpt_solutions++;
+			}
+			else
+			{
+				from_column = 0;
+				ft_init_board(board);
+				ft_calculate_positions(board,positions);
+				printf("\nOn a place une reine dans la case (%d, %d)\n\n", current_line, positions[current_line]);
+				current_line++;
+			}
+			
+		}
+		else
+		{
+			current_line--;
+			cpt_queens--;
+			from_column = positions[current_line] + 1;
+			positions[current_line] = - 1;
+		}
+		i++;
+		ft_show_board(board);
+	}*/
+
+
+}
+
+
+
+
+void	ft_go_back(int current_line, int cpt_queens, int from_column, int *positions )
+{
+	current_line--;
+	cpt_queens--;
+	from_column = positions[current_line] + 1;
+	positions[current_line] = - 1;
+}
+
+
+int	ft_eight_queens_puzzle(void)
+{
+	i++;
+	if (from_column < 8 )
+	{
+	//	printf("=====  TOUR %d   =====\n", i);
+	//	printf("current_line=%d, current_column=%d, from_column=%d, cpt_queens=%d\n", current_line, current_column, from_column, cpt_queens);
+	//	printf("Nombre de solutions trouvées: %d\n",cpt_solutions);
+		printf("positions = [");
+		for (j = 0; j < 7; j++)
+			printf("%d, ", positions[j]);
+		printf("%d]\n", positions[j]);
+
+
+		ft_init_board(board);
+		ft_calculate_positions(board, positions);
+
+	//	ft_show_board(board);
+
+
+
+		if (ft_place_queen_on_line(board, current_line, from_column) >= 0)
+		{	
+			positions[current_line] = ft_place_queen_on_line(board, current_line, from_column); //3
+			cpt_queens++; //8
+			if (cpt_queens == 8)
+			{
+				cpt_solutions++; //1
+				current_line--;//7
+				cpt_queens--;//7
+				if (positions[current_line] == 7)
+				{
+					positions[current_line] = -1;
+					current_line--;
+					cpt_queens--;
+					from_column = positions[current_line] + 1;
+					positions[current_line] = - 1;
+					ft_eight_queens_puzzle();
+				}
+				else
+				{
+					from_column = positions[current_line] + 1;//4
+					positions[current_line] = - 1; 
+					positions[current_line+1] = -1;
+					ft_eight_queens_puzzle();
+				}
+			}
+			else
+			{
+				from_column = 0;
+				ft_init_board(board);
+				ft_calculate_positions(board,positions);
+			//	printf("\nOn a place une reine dans la case (%d, %d)\n\n", current_line, positions[current_line]);
+				current_line++;
+				ft_eight_queens_puzzle();
+			}
+		}
+		else
+		{
+	//		printf("flag2");
+			current_line--;
+			cpt_queens--;
+			if (positions[current_line] == 7)
+			{
+				positions[current_line] = -1;
+				current_line--;
+				cpt_queens--;
+				from_column = positions[current_line] + 1;
+				positions[current_line] = - 1;
+				ft_eight_queens_puzzle();
+			}
+			else
+			{
+				from_column = positions[current_line] + 1;
+				positions[current_line] = - 1;
+				ft_eight_queens_puzzle();
+			}
+		}
+	}
+	else
+		printf("flag end");
+		return cpt_solutions;
+
+}
+
+void	ft_show_board(int board[8][8])
+{
+	int i, j;
+
+	i = 0;
+	j = 0;
+	while (i < 8)
+	{
+		while (j < 8)
+		{
+			printf("| %d ",board[i][j]);
+			j++;
+		}
+		printf("\n--------------------------------\n");
+		i++;
+		j = 0;
+	}
+	printf("\n");
+
+}
+
+void	ft_init_board(int board[8][8])
+{
+	int	i, j;
+
+	i = 0;
+	j = 0;
+
+	while (i<8)
+	{
+		while(j<8)
+		{
+			board[i][j] = 0;
+			j++;
+		}
+		i++;
+		j = 0;
+	}
+}
+
+void	ft_calculate_positions(int board [8][8], int *positions)
+{
+	int i = 0;
+	int j = 0;
+
+
+	while(j < 8)
+	{
+		if(positions[j] >= 0)
+		{
+			x = j;
+			y = positions[j];
+			i = 0;
+			while (i < 8)
+				// croix
+			{
+				board[x][i] = 1;
+				board[i][y] = 1;
+				i++;
+			}
+			i = 0;
+			while ( x + i < 8 && y + i < 8)   //premiere diago
+			{
+				board[x+i][y+i] = 1;
+				i++;
+			}
+			i = 0;
+			while ( x - i >= 0 && y - i >= 0)
+			{
+				board[x-i][y-i] = 1;
+				i++;
+			}
+			i = 0;
+			while ( x + i < 8 && y - i >= 0)   //deuxieme diago
+			{
+				board[x+i][y-i] = 1;
+				i++;
+			}
+			i = 0;
+			while ( x -i >= 0 && y + i < 8)
+			{
+				board[x-i][y+i] = 1;
+				i++;
+			}
+		}
+		j++;
+	}
+	j = 0;
+	while(j<8)
+	{
+		if(positions[j] >= 0)
+			board[j][positions[j]] = 8;
+		j++;
+	}
+}
+
+
+
+int	ft_place_queen_on_line(int board[8][8], int line, int from_column)
+{
+	int	i = from_column;
+
+	while (board[line][i] != 0 && i < 8)
+	{
+		i++;
+	}
+	if (i < 8)
+		return i;
+	else
+		return -1;	
+}
+
+/*void	ft_calculate_positions2(int board [8][8], int x, int y)
+{
+	int i = 0;
+
+	while (i < 8)	// croix
+	{
+		board[x][i] = 1;
+		board[i][y] = 1;
+		i++;
+	}
+	i = 0;
+	while (x + i < 8)	  
+	{
+		while (y -i >= 0 && y + i < 8)
+		{
+			board[x+i][y+i] = 1;
+			board[x+i][y-i] = 1;
+			i++;
+		}
+	}
+	i = 0;
+	while ( x - i >= 0)
+	{
+		while (y - i >= 0 && y + i < 8)
+		{
+			board[x-i][y-i] = 1;
+			board[x-i][y+i] = 1;
+			i++;
+		}
+	}
+}*/
